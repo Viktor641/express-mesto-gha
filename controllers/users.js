@@ -40,7 +40,7 @@ const getUser = (req, res) => {
     .orFail(() => new Error('NotFound'))
     .then((user) => res.status(200).send(user))
     .catch((err) => {
-      if (err.name === 'NotFound') {
+      if (err.message === 'NotFound') {
         res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
       } else if (err.name === 'CastError') {
         res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя' });

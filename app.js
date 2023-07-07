@@ -23,7 +23,7 @@ app.use('/cards', require('./routes/cards'));
 const { NOT_FOUND } = require('./utils/errors');
 
 app.use((req, res) => {
-  res.status(NOT_FOUND).send('Сервер с указанным адресом не найден');
+  res.status(NOT_FOUND).send({ message: 'Сервер с указанным адресом не найден' });
 });
 
 app.listen(PORT, () => {
