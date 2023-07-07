@@ -28,7 +28,9 @@ const getCards = (req, res) => {
     .then((cards) => {
       res.status(200).send(cards);
     })
-    .catch(res.status(SERVER_ERROR).send(SERVER_ERROR_MESSAGE));
+    .catch(() => {
+      res.status(SERVER_ERROR).send(SERVER_ERROR_MESSAGE);
+    });
 };
 
 const deleteCard = (req, res) => {
@@ -40,9 +42,9 @@ const deleteCard = (req, res) => {
       res.status(200).send(card);
     })
     .catch((err) => {
-      if (err.name === 'NotFound') {
+      if (err.message === 'NotFound') {
         res.status(NOT_FOUND).send({ message: 'Карточка с указанным _id не найдена.' });
-      } else if (err.message === 'CastError') {
+      } else if (err.name === 'CastError') {
         res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные карточки' });
       } else {
         res.status(SERVER_ERROR).send({ message: SERVER_ERROR_MESSAGE });

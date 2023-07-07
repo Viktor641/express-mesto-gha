@@ -20,6 +20,12 @@ app.use((req, res, next) => {
 app.use('/users', require('./routes/users'));
 app.use('/cards', require('./routes/cards'));
 
+const { NOT_FOUND } = require('./utils/errors');
+
+app.use((req, res) => {
+  res.status(NOT_FOUND).send('Сервер с указанным адресом не найден');
+});
+
 app.listen(PORT, () => {
   console.log(`App listening on port ${PORT}`);
 });

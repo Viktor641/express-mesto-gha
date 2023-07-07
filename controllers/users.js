@@ -28,7 +28,9 @@ const getUsers = (req, res) => {
       console.log(user);
       res.status(200).send(user);
     })
-    .catch(res.status(SERVER_ERROR).send(SERVER_ERROR_MESSAGE));
+    .catch(() => {
+      res.status(SERVER_ERROR).send(SERVER_ERROR_MESSAGE);
+    });
 };
 
 const getUser = (req, res) => {
@@ -40,7 +42,7 @@ const getUser = (req, res) => {
     .catch((err) => {
       if (err.name === 'NotFound') {
         res.status(NOT_FOUND).send({ message: 'Пользователь по указанному _id не найден.' });
-      } else if (err.message === 'CastError') {
+      } else if (err.name === 'CastError') {
         res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные пользователя' });
       } else {
         res.status(SERVER_ERROR).send({ message: SERVER_ERROR_MESSAGE });
@@ -64,7 +66,7 @@ const patchProfile = (req, res) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'CastError' || err.name === 'ValidationError') {
         res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
       } else if (err.message === 'NotFound') {
         res.status(NOT_FOUND).send({ message: 'Пользователь с указанным _id не найден.' });
