@@ -25,7 +25,6 @@ const CreateUser = (req, res) => {
 const getUsers = (req, res) => {
   User.find({})
     .then((user) => {
-      console.log(user);
       res.status(200).send(user);
     })
     .catch(() => {
@@ -66,7 +65,7 @@ const patchProfile = (req, res) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError' || err.name === 'ValidationError') {
+      if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении профиля.' });
       } else if (err.message === 'NotFound') {
         res.status(NOT_FOUND).send({ message: 'Пользователь с указанным _id не найден.' });
@@ -92,7 +91,7 @@ const patchAvatar = (req, res) => {
       res.status(200).send(user);
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
+      if (err.name === 'ValidationError') {
         res.status(BAD_REQUEST).send({ message: 'Переданы некорректные данные при обновлении аватара.' });
       } else if (err.message === 'NotFound') {
         res.status(NOT_FOUND).send({ message: 'Пользователь с указанным _id не найден.' });
