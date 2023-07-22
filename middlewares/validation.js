@@ -1,4 +1,3 @@
-// eslint-disable-next-line import/no-extraneous-dependencies
 const { celebrate, Joi } = require('celebrate');
 const validator = require('validator');
 const BedRequestError = require('../errors/BedRequestError');

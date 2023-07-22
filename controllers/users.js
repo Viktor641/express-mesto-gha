@@ -19,9 +19,7 @@ const CreateUser = (req, res, next) => {
         name, about, avatar, email, password: hash,
       });
     })
-    .then((user) => {
-      res.status(200).send(user);
-    })
+    .then((user) => res.status(201).send(user))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         throw new BedRequestError('Переданы некорректные данные при создании пользователя.');
