@@ -32,6 +32,7 @@ const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
   Card.findById(cardId)
+    .orFail(() => new Error('NotFound'))
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
         Card.findByIdAndRemove(cardId)
@@ -41,8 +42,8 @@ const deleteCard = (req, res, next) => {
       }
     })
     .catch((err) => {
-      if (err.name === 'CastError') {
-        throw new BedRequestError('Передан некорректный _id карточки.');
+      if (err.message === 'NotFound') {
+        throw new NotFoundError('Передан несуществующий _id карточки.');
       }
     })
     .catch(next);
