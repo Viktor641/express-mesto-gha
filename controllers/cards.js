@@ -35,18 +35,17 @@ const deleteCard = (req, res, next) => {
     .orFail(() => new Error('NotFound'))
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Card.findByIdAndRemove(cardId)
-          .then(() => res.status(200).send(card));
+        Card.findByIdAndRemove(cardId).then(() => res.status(200).send(card));
       } else {
-        throw new ForbiddenError('Нельзя удалять чужие карточки');
+        next(new ForbiddenError('Нельзя удалять чужие карточки'));
       }
     })
     .catch((err) => {
       if (err.message === 'NotFound') {
-        throw new NotFoundError('Передан несуществующий _id карточки.');
+        next(new NotFoundError('Передан несуществующий _id карточки.'));
       }
-    })
-    .catch(next);
+      next(err);
+    });
 };
 
 const likeCard = (req, res, next) => {
