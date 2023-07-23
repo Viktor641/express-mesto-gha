@@ -32,17 +32,17 @@ const deleteCard = (req, res, next) => {
   const { cardId } = req.params;
 
   Card.findById(cardId)
-    .orFail(() => new Error('NotFound'))
     .then((card) => {
       if (card.owner.toString() === req.user._id) {
-        Card.findByIdAndRemove(cardId).then(() => res.status(200).send(card));
+        Card.findByIdAndRemove(cardId)
+          .then(() => res.status(200).send(card));
       } else {
         throw new ForbiddenError('Нельзя удалять чужие карточки');
       }
     })
     .catch((err) => {
-      if (err.message === 'NotFound') {
-        throw new NotFoundError('Передан несуществующий _id карточки.');
+      if (err.name === 'CastError') {
+        throw new BedRequestError('Передан некорректный _id карточки.');
       }
     })
     .catch(next);
