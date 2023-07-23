@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
 // eslint-disable-next-line import/no-extraneous-dependencies
 const { errors } = require('celebrate');
 const {
-  CreateUser,
+  createUser,
   login,
 } = require('./controllers/users');
 
@@ -22,7 +22,7 @@ const app = express();
 app.use(express.json());
 
 app.post('/signin', validationLogin, login);
-app.post('/signup', validationCreateUser, CreateUser);
+app.post('/signup', validationCreateUser, createUser);
 
 app.use(auth);
 app.use(routes);

@@ -40,6 +40,11 @@ const deleteCard = (req, res, next) => {
         throw new ForbiddenError('Нельзя удалять чужие карточки');
       }
     })
+    .catch((err) => {
+      if (err.message === 'NotFound') {
+        throw new NotFoundError('Передан несуществующий _id карточки.');
+      }
+    })
     .catch(next);
 };
 
