@@ -10,7 +10,7 @@ const CreateCard = (req, res, next) => {
 
   Card.create({ name, link, owner })
     .then((card) => {
-      res.status(200).send(card);
+      res.status(201).send(card);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
@@ -43,6 +43,7 @@ const deleteCard = (req, res, next) => {
     .catch((err) => {
       if (err.message === 'NotFound') {
         next(new NotFoundError('Передан несуществующий _id карточки.'));
+        return;
       }
       next(err);
     });
